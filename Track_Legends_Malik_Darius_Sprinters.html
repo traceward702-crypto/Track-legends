@@ -1,0 +1,1154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Track Legends — Championship Edition</title>
+<style>button{touch-action:manipulation;}
+:root{font-family:system-ui,Arial,sans-serif;background:#06101d;color:#f5f7fb}
+*{box-sizing:border-box}
+body{margin:0;background:#06101d}
+.app{min-height:100vh;padding:18px;background:linear-gradient(180deg,#071426,#091b2d)}
+.wrap{max-width:1050px;margin:auto}
+.title{font-size:clamp(30px,7vw,52px);font-weight:950;letter-spacing:-2px}
+.sub{color:#a9bad0;margin:3px 0 18px}
+.card{background:#102238;border:1px solid #2b4663;border-radius:20px;padding:18px;margin:12px 0}
+h2,h3{margin-top:0}
+.sectionTitle{font-size:14px;text-transform:uppercase;letter-spacing:1.5px;color:#8fa8c4;margin:18px 0 8px}
+.events{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px}
+.event{min-height:58px;border:1px solid #355473;border-radius:14px;background:#142c46;color:#fff;padding:12px;text-align:left;font-weight:900;font-size:15px;cursor:pointer}
+.event:active{transform:scale(.98)}
+.event span{display:block;color:#91a9c2;font-size:11px;font-weight:700;margin-top:3px}
+.hidden{display:none!important}
+.topbar{display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap}
+.pill{background:#162f4b;border:1px solid #355473;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800}
+.trackWrap{overflow:hidden;border-radius:18px;border:1px solid #385674;background:#102238}
+.track{height:310px;position:relative;overflow:hidden;background:#b65339}
+.track.sprint{background:repeating-linear-gradient(0deg,#a94331 0 47px,#d35f43 47px 50px)}
+.lane{position:absolute;left:0;right:0;border-top:2px solid rgba(255,255,255,.55)}
+.runner,.competitor{position:absolute;z-index:4;left:5%;transition:left .12s linear;font-size:32px}
+.runner{font-size:43px}
+.competitor{font-size:30px;left:5%;z-index:4}
+.competitor .runnerSprite,.ovalCompetitor 
+/* Track Legends kit variations */
+.runnerSprite.kit-red { --kit:#d92d2d; --kit2:#8f1717; }
+.runnerSprite.kit-blue { --kit:#2166d1; --kit2:#123d91; }
+.runnerSprite.kit-green { --kit:#29945a; --kit2:#155b36; }
+.runnerSprite.kit-gold { --kit:#d1a51f; --kit2:#765d10; }
+.runnerSprite.kit-purple { --kit:#8747b8; --kit2:#522678; }
+.runnerSprite.kit-cyan { --kit:#1595a8; --kit2:#0b5662; }
+.runnerSprite.kit-orange { --kit:#e97920; --kit2:#8f420b; }
+.runnerSprite.kit-pink { --kit:#d14b82; --kit2:#762545; }
+
+.runnerSprite.kit-red .torso,.runnerSprite.kit-red .shorts { background:#d92d2d; }
+.runnerSprite.kit-blue .torso,.runnerSprite.kit-blue .shorts { background:#2166d1; }
+.runnerSprite.kit-green .torso,.runnerSprite.kit-green .shorts { background:#29945a; }
+.runnerSprite.kit-gold .torso,.runnerSprite.kit-gold .shorts { background:#d1a51f; }
+.runnerSprite.kit-purple .torso,.runnerSprite.kit-purple .shorts { background:#8747b8; }
+.runnerSprite.kit-cyan .torso,.runnerSprite.kit-cyan .shorts { background:#1595a8; }
+.runnerSprite.kit-orange .torso,.runnerSprite.kit-orange .shorts { background:#e97920; }
+.runnerSprite.kit-pink .torso,.runnerSprite.kit-pink .shorts { background:#d14b82; }
+
+.countryUSA .torso,.countryUSA .shorts{background:#1e4fa3}.countryUSA .body{background:linear-gradient(180deg,#1e4fa3 0 68%,#fff 68% 84%,#d92d2d 84% 100%)}.countryUSA .shoe{background:#d92d2d}
+.countryJAM .torso,.countryJAM .shorts{background:#111}.countryJAM .body{background:#ffd32a}.countryJAM .shoe{background:#28a745}
+.countryFRA .torso,.countryFRA .shorts{background:#2455b8}.countryFRA .body{background:#fff}.countryFRA .shoe{background:#e53935}
+.countryPOL .torso,.countryPOL .shorts{background:#fff}.countryPOL .body{background:#d92828}.countryPOL .shoe{background:#fff}
+.countryAUS .torso,.countryAUS .shorts{background:#16733b}.countryAUS .body{background:#f4d03f}.countryAUS .shoe{background:#fff}
+.playerRunner .countryBadge{display:block}
+.playerRunner{filter:drop-shadow(0 0 3px rgba(255,255,255,.25))}
+.countryBadge{position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);white-space:nowrap;font-size:10px;font-weight:900;background:rgba(0,0,0,.78);padding:2px 5px;border-radius:5px;z-index:60}
+.recordCard{padding:10px;border:1px solid #2e4b66;border-radius:12px;background:#0d2035;font-size:12px}.recordCard b{display:block;font-size:14px}.recordCard span{color:#9eb1c9}
+
+.competitorTime{
+  position:absolute;
+  left:50%;
+  top:100%;
+  transform:translateX(-50%);
+  margin-top:7px;
+  white-space:nowrap;
+  padding:2px 6px;
+  border-radius:8px;
+  background:rgba(8,10,18,.9);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.2);
+  font:700 10px/1.2 Arial,sans-serif;
+  z-index:50;
+}
+
+.runnerSprite{transform:translate(-50%,-50%) scale(.78);transform-origin:center}
+.ovalCompetitor{position:absolute;z-index:7;font-size:29px;left:50%;top:50%;transform:translate(-50%,-50%)}
+
+.name{position:absolute;left:6px;z-index:7;font-size:10px;font-weight:900;background:rgba(0,0,0,.22);padding:2px 4px;border-radius:4px}
+.finish{position:absolute;right:6%;top:0;bottom:0;border-left:5px dashed rgba(255,255,255,.8);z-index:3}
+.startline{position:absolute;left:5%;top:0;bottom:0;border-left:3px solid rgba(255,255,255,.7);z-index:3}
+.oval{height:360px;background:#16354a;position:relative;overflow:hidden}
+.oval .outer{position:absolute;inset:28px 7%;border:34px solid #b65339;border-radius:48% 48% 42% 42%/50% 50% 38% 38%;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25)}
+.oval .inner{position:absolute;inset:90px 20%;border:3px solid rgba(255,255,255,.6);border-radius:50%;background:#16354a}
+.ovalRunner{position:absolute;z-index:8;font-size:36px;left:50%;top:25px;transform:translateX(-50%)}
+.lapdot{position:absolute;z-index:9;width:12px;height:12px;border-radius:50%;background:#fff}
+.lapdot.d1{left:14%;top:48%}.lapdot.d2{left:50%;top:18%}.lapdot.d3{right:14%;top:48%}.lapdot.d4{left:50%;bottom:18%}
+.hurdle{position:absolute;z-index:6;width:28px;height:35px;border:4px solid #f0c75e;border-bottom:0;border-radius:3px 3px 0 0}
+.jumpRunner{position:absolute;z-index:8;font-size:40px;left:8%;bottom:68px}
+.jumpZone{height:260px;position:relative;overflow:hidden;background:linear-gradient(#b7c5d1 0 42%,#c99a5d 42% 48%,#d8a86c 48% 100%)}
+.board{position:absolute;left:28%;top:42%;width:5px;height:16%;background:#fff}
+.sand{position:absolute;left:31%;right:3%;top:48%;bottom:7%;background:#d6a96f;border:3px solid #a77842;border-radius:6px}
+.measure{position:absolute;right:5%;top:53%;font-size:12px;font-weight:900;color:#704b2a}
+.bar{height:13px;background:#263a50;border-radius:9px;overflow:hidden;margin:7px 0 12px}
+.fill{height:100%;width:0;background:#58dc8a;transition:width .12s}
+.actions{display:flex;gap:7px;flex-wrap:wrap}
+.btn{border:0;border-radius:12px;padding:12px 16px;background:#2e9ff4;color:#fff;font-weight:900;font-size:15px;cursor:pointer;min-height:44px}
+.btn.alt{background:#35516c}.btn.gold{background:#b98728}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
+.stat{background:#132b44;border:1px solid #2a4661;border-radius:13px;padding:10px}
+.stat b{display:block;font-size:20px;margin-top:2px}
+.result{font-size:25px;font-weight:950;margin-top:10px;min-height:34px}
+.small{font-size:12px;color:#9eb1c9}
+.medals{display:flex;gap:9px;flex-wrap:wrap}.medal{padding:9px 12px;border-radius:12px;background:#152e49;border:1px solid #34506b;font-weight:900}
+.goldText{color:#f3ce5d}.silverText{color:#d7e1ec}.bronzeText{color:#d8a06a}
+
+.heat{border:1px solid #31506d;background:#132b44;border-radius:14px;padding:10px;margin:8px 0}
+.heatHead{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-weight:900}
+.athletes{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:6px;margin-top:7px}
+.athlete{padding:7px 9px;border-radius:9px;background:#0d2035;border:1px solid #263f58;font-size:12px}
+.athlete.me{border-color:#59d889;background:#173b35}.seed{color:#91a9c2;font-size:11px}
+.competition{background:linear-gradient(135deg,#182f49,#102238)}
+.champSelect{width:100%;margin:10px 0;padding:12px;border-radius:12px;border:1px solid #355473;background:#0d2136;color:#fff;font-weight:800;font-size:15px}
+.startOverlay{position:absolute;inset:0;z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(3,12,22,.78);text-align:center;border-radius:18px}
+.startOverlay.hidden{display:none}
+
+.finishCutscene{position:absolute;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at center,rgba(39,74,108,.96),rgba(3,10,19,.98));text-align:center;pointer-events:none;animation:finishSceneIn .25s ease-out}
+.finishCutscene.hidden{display:none}
+.finishSceneCard{width:min(92%,520px);padding:24px 18px;border:2px solid rgba(255,255,255,.35);border-radius:22px;background:rgba(7,18,31,.92);box-shadow:0 18px 60px rgba(0,0,0,.45)}
+.finishScenePlace{font-size:clamp(36px,11vw,72px);font-weight:1000;letter-spacing:2px}
+.finishSceneRunner{font-size:64px;display:inline-block;animation:finishRunner .7s ease-in-out}
+.finishSceneName{font-size:clamp(20px,5vw,32px);font-weight:950;margin-top:5px}
+.finishSceneTime{font-size:18px;color:#b9c9db;margin-top:5px}
+.finishSceneDistance{font-size:13px;color:#86a2bc;margin-top:9px}
+@keyframes finishSceneIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+@keyframes finishRunner{0%{transform:translateX(-90px) scale(.8)}55%{transform:translateX(18px) scale(1.08)}100%{transform:translateX(0) scale(1)}}
+.finishFlash{animation:finishFlash .55s ease-in-out}
+@keyframes finishFlash{50%{filter:brightness(1.8);transform:scale(1.12)}}
+.startTitle{font-size:clamp(34px,10vw,72px);font-weight:1000;letter-spacing:2px;text-transform:uppercase}
+.startSub{font-size:18px;color:#b8c9dc;margin-top:8px}
+#game{position:relative}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:7px;border-bottom:1px solid #2a425b}th{color:#9eb2ca}
+@media(max-width:560px){.card{padding:14px}.track{height:270px}.oval{height:300px}.jumpZone{height:235px}.runner{font-size:38px}.event{font-size:14px}}
+
+.runnerSprite,.runnerSprite *{position:absolute;box-sizing:border-box}
+.runnerSprite{width:38px;height:58px;transform:translate(-50%,-50%);z-index:10}
+.runnerSprite .head{width:13px;height:13px;border-radius:50%;background:#f3c39b;left:13px;top:1px}
+.runnerSprite .body{width:8px;height:23px;border-radius:5px;background:#39a9ff;left:16px;top:14px}
+.runnerSprite .arm{width:20px;height:4px;background:#f3c39b;top:20px;left:5px;transform-origin:16px 2px;border-radius:3px;animation:armSwing .16s infinite alternate ease-in-out}
+.runnerSprite .arm.a2{animation-delay:-.08s}
+.runnerSprite .leg{width:5px;height:24px;background:#f3c39b;left:16px;top:34px;transform-origin:3px 2px;border-radius:3px;animation:legRun .13s infinite alternate ease-in-out}
+.runnerSprite .leg.l2{animation-delay:-.065s}
+.runnerSprite .shoe{width:11px;height:4px;background:#fff;border-radius:4px;left:12px;top:56px}
+.runnerSprite .shoe.s2{left:20px}
+@keyframes legRun{from{transform:rotate(42deg)}to{transform:rotate(-45deg)}}
+@keyframes armSwing{from{transform:rotate(-45deg)}to{transform:rotate(45deg)}}
+.distanceTrack{height:360px;position:relative;overflow:hidden;background:#16354a}
+.distanceTrack .lapRing{position:absolute;inset:30px 8%;border:30px solid #b65339;border-radius:48%;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25)}
+.distanceTrack .innerRing{position:absolute;inset:92px 21%;border:3px solid rgba(255,255,255,.6);border-radius:50%}
+.lapLabel{position:absolute;top:8px;left:10px;z-index:20;font-weight:900;background:rgba(0,0,0,.45);padding:6px 9px;border-radius:8px}
+.relayZone{position:absolute;top:0;bottom:0;width:9%;background:rgba(255,255,255,.12);border-left:2px dashed rgba(255,255,255,.55);border-right:2px dashed rgba(255,255,255,.55);z-index:5}
+.baton{position:absolute;width:24px;height:5px;background:#f3ce5d;border-radius:4px;z-index:12;transition:all .15s}
+.handoffText{position:absolute;left:50%;top:10px;transform:translateX(-50%);z-index:20;font-weight:1000;font-size:18px;background:rgba(0,0,0,.55);padding:8px 14px;border-radius:12px;white-space:nowrap}
+.ceremony{margin-top:14px;border:1px solid #45617d;border-radius:18px;padding:16px;background:linear-gradient(180deg,#142c46,#0d1f32);text-align:center}
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:10px;margin:18px 0 8px}
+.podiumSpot{width:30%;border-radius:12px 12px 4px 4px;padding:10px 6px;font-weight:900}
+.podiumSpot.gold{height:125px}.podiumSpot.silver{height:100px}.podiumSpot.bronze{height:82px}
+.leaderboard{width:100%;border-collapse:collapse;margin-top:10px}
+.leaderboard td{padding:8px;border-bottom:1px solid #29435c}
+
+
+.relayRunner{position:absolute;z-index:9;width:38px;height:58px;transform:translate(-50%,-50%);opacity:.55}
+.relayRunner.active{opacity:1;filter:drop-shadow(0 0 7px rgba(255,255,255,.9))}
+.relayRunner .runnerSprite{position:absolute;left:50%;top:50%}
+.relayRunner.r1{left:24%;top:50%}.relayRunner.r2{left:50%;top:50%}.relayRunner.r3{left:76%;top:50%}.relayRunner.r4{left:50%;top:88%}
+.handoffFlash{animation:handoffFlash .45s ease-in-out 2}
+@keyframes handoffFlash{50%{transform:translate(-50%,-50%) scale(1.3)}}
+
+/* Upgraded field-event visuals */
+.fieldZone{height:320px;position:relative;overflow:hidden;background:linear-gradient(#6e9fc4 0 46%,#b98b5c 46% 100%);border-radius:18px}
+.fieldAthlete{position:absolute;left:10%;bottom:48px;z-index:8}
+.fieldAthlete .runnerSprite{transform:scale(.9)}
+.fieldImplement{position:absolute;z-index:9}
+.shotCircle{position:absolute;left:8%;bottom:32px;width:70px;height:70px;border:4px solid rgba(255,255,255,.65);border-radius:50%;background:#16354a}
+.shotSector{position:absolute;left:22%;bottom:0;width:70%;height:92%;background:linear-gradient(90deg,rgba(255,255,255,.18),transparent);clip-path:polygon(0 44%,100% 0,100% 100%,0 56%)}
+.highjumpTrack{height:320px;position:relative;overflow:hidden;background:linear-gradient(#74a7cf 0 58%,#4e8a57 58% 100%);border-radius:18px}
+.highjumpMat{position:absolute;left:58%;bottom:16px;width:32%;height:95px;background:#d6a96f;border:4px solid #a77842;border-radius:12px}
+.highjumpBar{position:absolute;left:52%;bottom:120px;width:42%;height:8px;background:#fff;border-radius:5px;z-index:7}
+.highjumpUpright{position:absolute;bottom:16px;width:7px;height:115px;background:#263a50;z-index:6}
+.highjumpUpright.u1{left:52%}.highjumpUpright.u2{left:94%}
+.tripleBoard{position:absolute;left:27%;top:42%;width:7px;height:16%;background:#fff}
+.triplePit{position:absolute;left:31%;right:3%;top:48%;bottom:7%;background:#d6a96f;border:3px solid #a77842;border-radius:6px}
+.jumpArc{animation:jumpArc .45s ease-out}
+@keyframes jumpArc{0%{transform:translateY(0)}50%{transform:translateY(-80px)}100%{transform:translateY(0)}}
+
+.resultsTitle{margin:0 0 8px;font-size:14px;text-transform:uppercase;letter-spacing:1.4px;color:#9eb2ca}
+#controls{position:relative;z-index:12}
+#actionButtons{position:relative;z-index:13}
+#ceremony{position:relative;z-index:5}
+</style>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Track Legends">
+<meta name="theme-color" content="#07111f">
+</head>
+<body>
+<main class="app"><div class="wrap">
+  <div class="title">🏟️ TRACK LEGENDS</div>
+  <div class="sub">Sprints • Oval races • Hurdles • Jumps • Relays • Championships</div>
+
+  <section id="home" class="card">
+    <div class="topbar"><h2>Choose an event</h2><span class="pill">Competition mode included</span></div>
+
+    <div class="sectionTitle">Sprints</div>
+    <div class="events" id="sprints"></div>
+    <div class="sectionTitle">Middle distance / oval</div>
+    <div class="events" id="distance"></div>
+    <div class="sectionTitle">Hurdles</div>
+    <div class="events" id="hurdles"></div>
+    <div class="sectionTitle">Field</div>
+    <div class="events" id="field"></div>
+    <div class="sectionTitle">Relays</div>
+    <div class="events" id="relays"></div>
+
+    <div class="card" style="margin-top:16px;background:linear-gradient(135deg,#152d49,#0e2034)">
+      <h3>🌎 Track &amp; Field World Records</h3>
+      <p class="small">Official records and current pending-ratification marks shown from World Athletics.</p>
+      <div class="events" id="worldRecords"></div>
+    </div>
+
+    <div class="card" style="text-align:center;background:linear-gradient(135deg,#162d45,#0d1d30);border-color:#48647f">
+      <div style="font-size:28px;font-weight:950">🏃 Cross Country</div>
+      <div class="small" style="font-size:15px;margin-top:5px">COMING SOON</div>
+    </div>
+
+    <div class="card competition">
+      <h3>🏆 Competition Mode</h3>
+      <p class="small">Race a championship final against elite-level opponents. Finish 1st, 2nd, or 3rd to earn a medal.</p>
+      <div id="championshipMenu" class="hidden">
+  <label for="champEvent"><b>Choose your championship event</b></label>
+  <select id="champEvent" class="champSelect"></select>
+  <button class="btn gold" id="startChampionship" type="button">START CHAMPIONSHIP</button>
+</div>
+<button class="btn gold" id="competitionBtn" type="button">ENTER CHAMPIONSHIP</button>
+    </div>
+  </section>
+
+  
+<section id="meet" class="card hidden">
+  <div class="topbar">
+    <div><h2 style="margin:0">🏟️ Championship Meet</h2><div class="small" id="meetEvent"></div></div>
+    <span class="pill" id="roundPill">Heats</span>
+  </div>
+  <div id="heatSummary"></div>
+  <div id="heatList"></div>
+  <div class="actions" style="margin-top:12px">
+    <button class="btn gold" id="runSelectedHeat" type="button">RUN YOUR HEAT</button>
+    <button class="btn alt" id="skipHeat" type="button">SIMULATE HEAT</button>
+    <button class="btn" id="nextRound" type="button">NEXT ROUND</button>
+  </div>
+  <div id="qualifierMsg" class="result" aria-live="polite"></div>
+</section>
+<section id="game" class="card hidden">
+    <div class="topbar">
+      <div><b id="eventName"></b><div class="small" id="eventInfo"></div></div>
+      <div class="pill" id="modePill">Practice</div>
+    </div>
+    <div id="startOverlay" class="startOverlay hidden">
+      <div class="startTitle" id="startTitle">GET READY</div>
+      <div class="startSub" id="startSub">Championship Heat</div>
+    </div>
+    <div id="finishCutscene" class="finishCutscene hidden" aria-live="polite">
+      <div class="finishSceneCard">
+        <div class="finishScenePlace" id="finishScenePlace">🥇 1ST</div>
+        <div class="finishSceneRunner" id="finishSceneRunner">🏃</div>
+        <div class="finishSceneName" id="finishSceneName">Finisher</div>
+        <div class="finishSceneTime" id="finishSceneTime">0.00s</div>
+        <div class="finishSceneDistance" id="finishSceneDistance">FINISH • 100m</div>
+      </div>
+    </div>
+    <div id="visual"></div>
+    <div id="controls">
+      <p id="powerLabel">Speed / effort</p>
+      <div class="bar"><div class="fill" id="fill"></div></div>
+      <div class="actions" id="actionButtons"></div>
+    </div>
+    <div id="msg" class="result" aria-live="polite"></div>
+    <div class="actions"><button class="btn alt" id="quitBtn" type="button">QUIT</button></div>
+  </section>
+
+  <section class="card">
+    <h3>🏆 Career</h3>
+    <div class="stats">
+      <div class="stat">Wins<b id="wins">0</b></div>
+      <div class="stat">Gold<b id="gold">0</b></div>
+      <div class="stat">Silver<b id="silver">0</b></div>
+      <div class="stat">Bronze<b id="bronze">0</b></div>
+      <div class="stat">Best 100m<b id="best">--</b></div>
+    </div>
+    <div class="medals" id="medals" style="margin-top:10px"></div>
+    <p class="small">Benchmarks are calibrated around modern elite performances. World Athletics recognizes official world records in the standard sprint, middle-distance, hurdle, relay and long-jump events; 150m/300m and SMR are treated as realistic showcase events here.</p>
+  </section>
+
+  <section class="card">
+    <h3>🌍 Elite benchmark guide</h3>
+    <table><thead><tr><th>Event</th><th>Elite target</th><th>Game standard</th></tr></thead>
+    <tbody id="benchmarkRows"></tbody></table>
+    <p class="small">Wind matters for 100m/200m and long jump; this game displays a wind reading for those events and treats +2.0 m/s or less as legal, matching World Athletics guidance.</p>
+  </section>
+</div></main>
+
+<script>
+(() => {
+'use strict';
+
+const EVENTS = {
+  '100m Sprint':{type:'sprint',distance:100,target:10.10,unit:'s',info:'Straight track • reaction + acceleration'},
+  '150m':{type:'sprint',distance:150,target:15.30,unit:'s',info:'Straight showcase sprint'},
+  '200m Sprint':{type:'oval',distance:200,target:20.30,unit:'s',info:'One curve • staggered start'},
+  '300m':{type:'oval',distance:300,target:33.00,unit:'s',info:'Three-quarter lap'},
+  '400m':{type:'oval',distance:400,target:44.80,unit:'s',info:'One full lap'},
+  '800m':{type:'oval',distance:800,target:102.50,unit:'s',info:'Two laps • tactical pace'},
+  '1500m':{type:'oval',distance:1500,target:220.00,unit:'s',info:'Three and three-quarter laps'},
+  '5000m':{type:'oval',distance:5000,target:800.00,unit:'s',info:'12.5 laps • distance race'},
+  '10000m':{type:'oval',distance:10000,target:1600.00,unit:'s',info:'25 laps • distance race'},
+  '110m Hurdles':{type:'hurdle',distance:110,target:13.25,unit:'s',info:'10 hurdles • jump timing'},
+  '400m Hurdles':{type:'hurdle400',distance:400,target:49.00,unit:'s',info:'10 hurdles • one full lap'},
+  'Long Jump':{type:'longjump',distance:0,target:8.70,unit:'m',info:'Run-up • takeoff • sand pit'},
+  'Triple Jump':{type:'triplejump',distance:0,target:18.00,unit:'m',info:'Hop • step • jump • sand pit'},
+  'Shot Put':{type:'shotput',distance:0,target:23.00,unit:'m',info:'Glide • release • throwing sector'},
+  'High Jump':{type:'highjump',distance:0,target:2.40,unit:'m',info:'Approach • takeoff • clear the bar'},
+  '4×100 Relay':{type:'relay',distance:400,target:38.00,unit:'s',info:'4 runners • visible baton handoffs'},
+  '4×200 Relay':{type:'relay',distance:800,target:76.00,unit:'s',info:'4 runners • two laps • visible handoffs'},
+  '4×400 Relay':{type:'relay',distance:1600,target:164.00,unit:'s',info:'4 runners • four laps • visible handoffs'},
+  'SMR':{type:'relay',distance:800,target:108.00,unit:'s',info:'Sprint Medley Relay • 100/100/200/400'},
+  'DMR':{type:'relay',distance:1600,target:230.00,unit:'s',info:'Distance Medley • 1200/400/800/1600'}
+};
+
+const groups = {
+  sprints:['100m Sprint','150m','200m Sprint','300m','400m'],
+  distance:['800m','1500m','5000m','10000m'],
+  hurdles:['110m Hurdles','400m Hurdles'],
+  field:['Long Jump','Triple Jump','Shot Put','High Jump'],
+  relays:['4×100 Relay','4×200 Relay','4×400 Relay','SMR','DMR']
+};
+
+const ATHLETES = [
+  ['You', 1.000, true], ['Andre Cole', .992], ['Malik Johnson', .996], ['Darius King', 1.004],
+  ['Noah Brooks', 1.010], ['Eli Carter', 1.016], ['Jordan Miles', 1.022], ['Marcus Reed', 1.029],
+  ['Jayden Hall', 1.036], ['Tyler Grant', 1.043], ['Cameron Price', 1.051], ['Derek Stone', 1.058],
+  ['Isaiah Young', 1.064], ['Chris Bennett', 1.071], ['Jalen Woods', 1.079], ['Ryan Cole', 1.088],
+  ['Amari Lewis', 1.096], ['Devon Scott', 1.105], ['Kobe Allen', 1.114], ['Micah Jones', 1.123],
+  ['Liam Walker', 1.134], ['Ethan Brooks', 1.145], ['Mason King', 1.156], ['Caleb Moore', 1.168]
+];
+let meet = null;
+
+function seedAthletes(eventName){
+  const e=EVENTS[eventName];
+  return ATHLETES.map(a=>({
+    name:a[0], factor:a[1], me:!!a[2],
+    seedTime:e.type==='longjump' ? e.target*(1.02-a[1]*.05) : e.target*(1/a[1]),
+    lane:0, heat:0, result:null, qualified:false
+  })).sort((a,b)=>a.seedTime-b.seedTime);
+}
+function createMeet(eventName){
+  const athletes=seedAthletes(eventName);
+  const heatCount=3, heats=Array.from({length:heatCount},()=>[]);
+  // Zig-zag seed distribution, similar to the 2026 World Athletics seeding principle.
+  athletes.forEach((a,i)=>{
+    const round=i%(heatCount*2);
+    const h=round<heatCount?round:heatCount*2-1-round;
+    heats[h].push(a);
+  });
+  heats.forEach((h,i)=>h.forEach((a,j)=>{a.heat=i+1;a.lane=j+1}));
+  meet={eventName,round:'Heats',heatIndex:0,heats,qualifiers:[],finalists:[],active:true};
+  $('meet').classList.remove('hidden');$('game').classList.add('hidden');$('home').classList.add('hidden');
+  $('meetEvent').textContent=eventName+' • 24 entries • 3 heats';
+  $('roundPill').textContent='Heats';
+  $('qualifierMsg').textContent='Top 2 in each heat plus the next 2 fastest advance.';
+  renderMeet();
+}
+function renderMeet(){
+  const root=$('heatList');root.innerHTML='';
+  meet.heats.forEach((heat,i)=>{
+    const box=document.createElement('div');box.className='heat';
+    const rows=heat.map((a,j)=>`<div class="athlete ${a.me?'me':''}"><b>${j+1}. ${a.name}</b><div class="seed">Lane ${j+1} • Seed ${formatTime(a.seedTime)}</div>${a.result!==null?`<div><b>Result: ${formatTime(a.result)}</b></div>`:''}</div>`).join('');
+    box.innerHTML=`<div class="heatHead"><span>Heat ${i+1}</span><span>${heat.filter(a=>a.result!==null).length}/${heat.length} results</span></div><div class="athletes">${rows}</div>`;
+    root.appendChild(box);
+  });
+}
+function simulateHeat(index){
+  const e=EVENTS[meet.eventName], heat=meet.heats[index];
+  if(heat.every(a=>a.result!==null))return;
+  heat.forEach(a=>{
+    const noise=.975+Math.random()*.055;
+    a.result=e.type==='longjump'?e.target*(.86+Math.random()*.13)*noise:e.target*noise*a.factor;
+  });
+  heat.sort((a,b)=>a.result-b.result);
+  if(e.type==='longjump') heat.sort((a,b)=>b.result-a.result);
+  heat.forEach((a,i)=>a.lane=i+1);
+  meet.heatIndex=Math.min(meet.heats.length-1,index+1);
+  renderMeet();
+}
+function simulateAllHeats(){
+  meet.heats.forEach((_,i)=>simulateHeat(i));
+  qualifyRound();
+}
+function qualifyRound(){
+  const e=EVENTS[meet.eventName];
+  const all=meet.heats.flat().filter(a=>a.result!==null);
+  const byPlace=meet.heats.flatMap(h=>h.filter(a=>a.result!==null).slice(0,2));
+  const remaining=all.filter(a=>!byPlace.includes(a)).sort((a,b)=>e.type==='longjump'?b.result-a.result:a.result-b.result);
+  const q=[...byPlace,...remaining.slice(0,2)];
+  meet.qualifiers=q;
+  q.forEach(a=>a.qualified=true);
+  $('qualifierMsg').textContent=`Qualifiers: ${q.map(a=>a.name).join(', ')}`;
+  $('roundPill').textContent='Qualified';
+  $('nextRound').disabled=false;
+}
+function startChampionshipEvent(name){
+  createMeet(name);
+}
+function startNextRound(){
+  if(!meet)return;
+  if(meet.round==='Heats'){
+    if(!meet.qualifiers.length){qualifyRound();return}
+    const q=meet.qualifiers.slice();
+    // Build one semifinal from the 8 qualifiers.
+    meet.round='Final';
+    meet.heats=[q];
+    q.forEach((a,i)=>{a.heat=1;a.lane=i+1;a.result=null;a.qualified=false});
+    meet.qualifiers=[];
+    $('roundPill').textContent='Final';
+    $('qualifierMsg').textContent='Eight finalists — run or simulate the championship final.';
+    $('nextRound').disabled=true;
+    renderMeet();
+  }
+}
+function runYourHeat(){
+  if(!meet)return;
+  const index=meet.heats.findIndex(h=>h.some(a=>a.me));
+  if(index<0)return;
+  simulateHeat(index);
+  if(meet.round==='Heats'){
+    if(meet.heats.every(h=>h.every(a=>a.result!==null)))qualifyRound();
+    $('qualifierMsg').textContent=`Your heat finished. ${meet.heats[index].map((a,i)=>`${i+1}. ${a.name} ${formatTime(a.result)}`).join(' • ')}`;
+  }else{
+    finishMeetFinal();
+  }
+}
+function finishMeetFinal(){
+  const e=EVENTS[meet.eventName], h=meet.heats[0];
+  if(h.some(a=>a.result===null))simulateHeat(0);
+  h.sort((a,b)=>e.type==='longjump'?b.result-a.result:a.result-b.result);
+  const me=h.findIndex(a=>a.me)+1;
+  const text=me===1?'🏆 CHAMPION!':me===2?'🥈 SILVER!':me===3?'🥉 BRONZE!':`${me}th place`;
+  $('qualifierMsg').textContent=`${text} • ${h[me-1].name==='You'?formatTime(h[me-1].result):'Final complete'}`;
+  if(me===1){career.wins++;career.gold++}else if(me===2)career.silver++;else if(me===3)career.bronze++;
+  updateCareer();
+  $('nextRound').disabled=true;
+}
+const benchmarkText = {
+ '100m Sprint':'9.95s','150m':'15.05s*','200m Sprint':'19.95s','300m':'32.00s*','400m':'43.80s',
+ '800m':'1:41.0','1500m':'3:38.0','5000m':'12:40.0','10000m':'26:20.0','110m Hurdles':'13.00s','400m Hurdles':'47.50s',
+ 'Long Jump':'8.70m','Triple Jump':'18.00m','Shot Put':'23.00m','High Jump':'2.40m','4×100 Relay':'37.00s','4×200 Relay':'1:14.0','4×400 Relay':'2:40.0','SMR':'1:45.0*','DMR':'3:45.0*'
+};
+const $ = id => document.getElementById(id);
+let current = null, raf = 0, lastFrame = 0;
+let career = {wins:0,gold:0,silver:0,bronze:0,best:null};
+const COMPETITORS = [
+  // Different base abilities: higher skill = faster runner.
+  {name:'Andre Cole', country:'USA', flag:'🇺🇸', kit:'countryUSA', skill:1.018},
+  {name:'Malik Johnson', country:'Jamaica', flag:'🇯🇲', kit:'countryJAM', skill:1.006},
+  {name:'Darius King', country:'France', flag:'🇫🇷', kit:'countryFRA', skill:1.026},
+  {name:'Noah Brooks', country:'Poland', flag:'🇵🇱', kit:'countryPOL', skill:.982},
+  {name:'Eli Carter', country:'Australia', flag:'🇦🇺', kit:'countryAUS', skill:1.011},
+  {name:'Jordan Miles', country:'USA', flag:'🇺🇸', kit:'countryUSA', skill:1.033},
+  {name:'Marcus Reed', country:'Jamaica', flag:'🇯🇲', kit:'countryJAM', skill:.994}
+];
+
+function raceCompetitors(){
+  // Each rival gets a distinct ability plus small race-day variation.
+  // This creates visible separation instead of identical speeds.
+  return COMPETITORS.map((c,i)=>{
+    const dayVariation=(Math.random()-0.5)*0.012;      // +/-0.6%
+    const athleteVariation=(Math.random()-0.5)*0.006; // +/-0.3%
+    const paceFactor=Math.max(.965,Math.min(1.045,c.skill+dayVariation+athleteVariation));
+    // Stronger first steps: rivals accelerate quickly off the gun, but their
+    // final target time is still slightly slower than the player.
+    const startBurst=0; // stay close to the player's pace without ever surging ahead
+    return {
+      ...c, progress:0, meters:0, speed:0, paceFactor, startBurst,
+      finalTime:null, finished:false, finishPlace:null,
+      cutsceneShown:false, targetTime:null
+    };
+  });
+}
+
+function addSprintCompetitors(track){
+  const lanes = [45,95,145,195,245,295,345];
+  const names = COMPETITORS.slice(0,7);
+  names.forEach((c,i)=>{
+    const runner=document.createElement('div');
+    runner.className='competitor '+c.kit;
+    runner.id='comp'+i;
+    runner.innerHTML='<span class="runnerSprite"><span class="head"></span><span class="body"></span><span class="arm"></span><span class="arm a2"></span><span class="leg"></span><span class="leg l2"></span><span class="shoe"></span><span class="shoe s2"></span><span class="countryBadge">'+c.flag+' '+c.country+'</span></span>';
+    runner.style.top=(lanes[i]-7)+'px';
+    runner.style.left='5%';
+    track.appendChild(runner);
+
+    const label=document.createElement('div');
+    label.className='name';
+    label.style.top=(lanes[i]-18)+'px';
+    label.textContent=c.flag+' '+c.name+' • '+c.country+' • LANE '+(i+2);
+    track.appendChild(label);
+  });
+}
+
+function addOvalCompetitors(track){
+  COMPETITORS.slice(0,7).forEach((c,i)=>{
+    const runner=document.createElement('div');
+    runner.className='ovalCompetitor '+c.kit;
+    runner.id='comp'+i;
+    runner.innerHTML='<span class="runnerSprite"><span class="head"></span><span class="body"></span><span class="arm"></span><span class="arm a2"></span><span class="leg"></span><span class="leg l2"></span><span class="shoe"></span><span class="shoe s2"></span><span class="countryBadge">'+c.flag+' '+c.country+'</span></span>';
+    runner.dataset.offset=(i*0.11).toFixed(3);
+    track.appendChild(runner);
+  });
+}
+
+function addHurdleCompetitors(track, isOval){
+  COMPETITORS.slice(0,7).forEach((c,i)=>{
+    const runner=document.createElement('div');
+    runner.className=(isOval?'ovalCompetitor':'competitor')+' '+c.kit;
+    runner.id='comp'+i;
+    runner.innerHTML='<span class="runnerSprite"><span class="head"></span><span class="body"></span><span class="arm"></span><span class="arm a2"></span><span class="leg"></span><span class="leg l2"></span><span class="shoe"></span><span class="shoe s2"></span><span class="countryBadge">'+c.flag+' '+c.country+'</span></span>';
+    if(!isOval) runner.style.top=(45+i*40)+'px';
+    track.appendChild(runner);
+  });
+}
+
+
+
+function makeButtons(){
+  for(const [group, names] of Object.entries(groups)){
+    const root=$(group);
+    names.forEach(name=>{
+      const e=EVENTS[name], b=document.createElement('button');
+      b.type='button'; b.className='event';
+      b.innerHTML=`${name}<span>${e.info}</span>`;
+      b.addEventListener('click',()=>startEvent(name,false));
+      root.appendChild(b);
+    });
+  }
+  $('competitionBtn').addEventListener('click',showChampionshipMenu);
+  $('startChampionship').addEventListener('click',startSelectedChampionship);
+  $('quitBtn').addEventListener('click',reset);
+  $('champEvent').innerHTML=Object.keys(EVENTS).map(n=>`<option value="${n}">${n}</option>`).join('');
+}
+function showChampionshipMenu(){
+  $('championshipMenu').classList.remove('hidden');
+  $('competitionBtn').classList.add('hidden');
+}
+function startSelectedChampionship(){
+  const name=$('champEvent').value;
+  if(name && EVENTS[name]) startEvent(name,true);
+}
+function startEvent(name,competition){
+  cancelAnimationFrame(raf);
+  const e=EVENTS[name];
+  current={name,e,competition,progress:0,time:0,finished:false,jumps:0,hurdlesCleared:0,exchanges:0,wind:0,effort:0,started:performance.now(),lastAction:performance.now(),competitors:raceCompetitors(),startedRace:false,laps:e.distance>0?e.distance/400:0,relayLeg:e.type==='relay'?0:null,meters:0,raceElapsed:0,playerFinished:false,finishOrder:[],playerPlace:null};
+  $('home').classList.add('hidden'); $('game').classList.remove('hidden');
+  $('eventName').textContent=(competition?'🏆 ':'')+name;
+  $('eventInfo').textContent=e.info;
+  $('modePill').textContent=competition?'🏆 Championship':'Practice';
+  $('msg').textContent='';
+  renderVisual();
+  renderControls();
+  if(e.type==='longjump') setupLongJump();
+  else if(e.type==='triplejump') setupTripleJump();
+  else if(e.type==='shotput') setupShotPut();
+  else if(e.type==='highjump') setupHighJump();
+  else if(e.type==='hurdle'||e.type==='hurdle400') setupHurdles();
+  else runLoop();
+  startSequence();
+}
+
+function isRunningRace(e){
+  return e.type==='sprint'||e.type==='oval'||e.type==='relay'||e.type==='hurdle'||e.type==='hurdle400';
+}
+function startSequence(){
+  if(!current)return;
+  const race=current;
+  const overlay=$('startOverlay');
+  const title=$('startTitle');
+  const sub=$('startSub');
+
+  // Clear starter sequence: READY -> SET -> GO.
+  race.startedRace=false;
+  race.started=0;
+  disableRaceButtons(true);
+  overlay.classList.remove('hidden');
+  title.textContent='READY';
+  sub.textContent='Get set in your lane…';
+  playStartTone();
+
+  setTimeout(()=>{
+    if(current!==race || race.finished)return;
+    title.textContent='SET';
+    sub.textContent='Get into position…';
+    playStartTone();
+  },650);
+
+  setTimeout(()=>{
+    if(current!==race || race.finished)return;
+    title.textContent='GO!';
+    sub.textContent='RUN NOW!';
+    race.startedRace=true;
+    race.started=performance.now();
+    disableRaceButtons(false);
+    playStartTone();
+    setTimeout(()=>{
+      if(current===race && !race.finished) overlay.classList.add('hidden');
+    },350);
+  },1300);
+}
+
+function playStartTone(){
+  try{
+    const C=window.AudioContext||window.webkitAudioContext;
+    if(!C)return;
+    const ctx=new C(), osc=ctx.createOscillator(), gain=ctx.createGain();
+    osc.frequency.value=880;
+    gain.gain.value=.08;
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(); osc.stop(ctx.currentTime+.16);
+  }catch(e){}
+}
+function disableRaceButtons(disabled){
+  document.querySelectorAll('#actionButtons .btn').forEach(b=>{
+    if(b.id!=='jumpBtn' || !disabled) b.disabled=disabled;
+  });
+}
+function renderVisual(){
+  const e=current.e, v=$('visual');
+  v.innerHTML='';
+  if(e.type==='sprint'){
+    const track=document.createElement('div'); track.className='track sprint';
+    for(let i=0;i<5;i++){const lane=document.createElement('div');lane.className='lane';lane.style.top=(i*50+45)+'px';track.appendChild(lane)}
+    track.innerHTML += '<div class="startline"></div><div class="finish"></div><div class="runner" id="runner"><span class="runnerSprite countryUSA playerRunner"><span class="head"></span><span class="body"></span><span class="arm"></span><span class="arm a2"></span><span class="leg"></span><span class="leg l2"></span><span class="shoe"></span><span class="shoe s2"></span><span class="countryBadge">🇺🇸 USA • YOU</span></span></div>';
+    addSprintCompetitors(track);
+    v.appendChild(track);
+  } else if(e.type==='oval'||e.type==='relay'){
+    const track=document.createElement('div'); track.className='oval';
+    track.innerHTML='<div class="outer"></div><div class="inner"></div><div class="lapdot d1"></div><div class="lapdot d2"></div><div class="lapdot d3"></div><div class="lapdot d4"></div><div class="ovalRunner" id="runner"><span class="runnerSprite countryUSA playerRunner"><span class="head"></span><span class="body"></span><span class="arm"></span><span class="arm a2"></span><span class="leg"></span><span class="leg l2"></span><span class="shoe"></span><span class="shoe s2"></span><span class="countryBadge">🇺🇸 USA • YOU</span></span></div>';
+    addOvalCompetitors(track);
+    v.appendChild(track);
+  } else if(e.type==='hurdle'||e.type==='hurdle400'){
+    const track=document.createElement('div'); track.className=e.type==='hurdle400'?'oval':'track sprint';
+    if(e.type==='hurdle400') track.innerHTML='<div class="outer"></div><div class="inner"></div><div class="ovalRunner" id="runner"><span class="runnerSprite countryUSA playerRunner"><span class="head"></span><span class="body"></span><span class="arm"></span><span class="arm a2"></span><span class="leg"></span><span class="leg l2"></span><span class="shoe"></span><span class="shoe s2"></span><span class="countryBadge">🇺🇸 USA • YOU</span></span></div>';
+    else track.innerHTML='<div class="startline"></div><div class="finish"></div><div class="runner" id="runner"><span class="runnerSprite countryUSA playerRunner"><span class="head"></span><span class="body"></span><span class="arm"></span><span class="arm a2"></span><span class="leg"></span><span class="leg l2"></span><span class="shoe"></span><span class="shoe s2"></span><span class="countryBadge">🇺🇸 USA • YOU</span></span></div>';
+    const n=e.type==='hurdle'?10:10;
+    for(let i=0;i<n;i++){const h=document.createElement('div');h.className='hurdle';h.style.left=(12+i*(e.type==='hurdle'?7.2:7.8))+'%';h.style.top=e.type==='hurdle'?'60%':'48%';track.appendChild(h)}
+    addHurdleCompetitors(track, e.type==='hurdle400');
+    v.appendChild(track);
+  }
+  if(e.type==='longjump'){
+    v.innerHTML='<div class="jumpZone"><div class="board"></div><div class="sand"></div><div class="measure" id="measure">Pit: 0.00m</div><div class="jumpRunner" id="jumpRunner"><div class="runnerSprite countryUSA playerRunner"><div class="head"></div><div class="torso"></div><div class="arm armL"></div><div class="arm armR"></div><div class="leg legL"></div><div class="leg legR"></div></div></div></div>';
+  } else if(e.type==='triplejump'){
+    v.innerHTML='<div class="jumpZone"><div class="tripleBoard"></div><div class="triplePit"></div><div class="measure" id="measure">Best: 0.00m</div><div class="jumpRunner" id="jumpRunner"><div class="runnerSprite countryUSA playerRunner"><div class="head"></div><div class="torso"></div><div class="arm armL"></div><div class="arm armR"></div><div class="leg legL"></div><div class="leg legR"></div></div></div></div>';
+  } else if(e.type==='shotput'){
+    v.innerHTML='<div class="fieldZone"><div class="shotCircle"></div><div class="shotSector"></div><div class="fieldAthlete" id="fieldAthlete"><div class="runnerSprite countryUSA playerRunner"><div class="head"></div><div class="torso"></div><div class="arm armL"></div><div class="arm armR"></div><div class="leg legL"></div><div class="leg legR"></div></div></div><div class="fieldImplement" id="shot">●</div><div class="measure" id="measure">Throw: 0.00m</div></div>';
+  } else if(e.type==='highjump'){
+    v.innerHTML='<div class="highjumpTrack"><div class="highjumpMat"></div><div class="highjumpBar" id="highjumpBar"></div><div class="highjumpUpright u1"></div><div class="highjumpUpright u2"></div><div class="jumpRunner" id="jumpRunner"><div class="runnerSprite countryUSA playerRunner"><div class="head"></div><div class="torso"></div><div class="arm armL"></div><div class="arm armR"></div><div class="leg legL"></div><div class="leg legR"></div></div></div><div class="measure" id="measure">Height: 0.00m</div></div>';
+  }
+}
+function renderControls(){
+  const a=$('actionButtons'); a.innerHTML='';
+  const e=current.e;
+  if(e.type==='longjump'){
+    a.innerHTML='<button class="btn" id="runBtn" type="button" disabled>RUN UP 💨</button><button class="btn gold" id="jumpBtn" type="button" disabled>JUMP 🦘</button>';
+    $('runBtn').addEventListener('click',jumpRun);
+    $('jumpBtn').addEventListener('click',takeoff);
+    $('powerLabel').textContent='Run-up speed';
+  } else if(e.type==='triplejump'){
+    a.innerHTML='<button class="btn" id="runBtn" type="button" disabled>RUN UP 💨</button><button class="btn gold" id="jumpBtn" type="button" disabled>HOP / STEP / JUMP</button>';
+    $('runBtn').addEventListener('click',jumpRun);
+    $('jumpBtn').addEventListener('click',tripleTakeoff);
+    $('powerLabel').textContent='Approach speed';
+  } else if(e.type==='shotput'){
+    a.innerHTML='<button class="btn" id="spinBtn" type="button" disabled>BUILD POWER 💪</button><button class="btn gold" id="throwBtn" type="button" disabled>RELEASE 🥎</button>';
+    $('spinBtn').addEventListener('click',shotPower);
+    $('throwBtn').addEventListener('click',shotThrow);
+    $('powerLabel').textContent='Throwing power';
+  } else if(e.type==='highjump'){
+    a.innerHTML='<button class="btn" id="runBtn" type="button" disabled>APPROACH 💨</button><button class="btn gold" id="jumpBtn" type="button" disabled>TAKE OFF ⬆️</button>';
+    $('runBtn').addEventListener('click',highApproach);
+    $('jumpBtn').addEventListener('click',highClear);
+    $('powerLabel').textContent='Approach / takeoff';
+  } else if(e.type==='hurdle'||e.type==='hurdle400'){
+    a.innerHTML='<button class="btn" id="runBtn" type="button">RUN 💨</button><button class="btn gold" id="jumpBtn" type="button">JUMP ⬆️</button>';
+    $('runBtn').addEventListener('click',()=>step(.055));
+    $('jumpBtn').addEventListener('click',jumpHurdle);
+    $('powerLabel').textContent='Race progress';
+  } else {
+    a.innerHTML='<button class="btn" id="runBtn" type="button">RUN 💨</button><button class="btn" id="paceBtn" type="button">PACE ⚡</button>';
+    $('runBtn').addEventListener('click',()=>step(.045));
+    $('paceBtn').addEventListener('click',()=>step(.062));
+    $('powerLabel').textContent=e.type==='relay'?'Team progress':'Speed / effort';
+  }
+}
+function runLoop(){
+  lastFrame=performance.now();
+  const tick=now=>{
+    if(!current||current.finished)return;
+    const dt=Math.min(.05,(now-lastFrame)/1000); lastFrame=now;
+
+    // The entire field is frozen until the starter gives GO.
+    if(!current.startedRace){
+      drawProgress();
+      raf=requestAnimationFrame(tick);
+      return;
+    }
+
+    current.time=(now-current.started)/1000;
+    // Both player and rivals are measured against the same event distance in meters.
+    if(isRunningRace(current.e) && !current.playerFinished){
+      const baseMps=current.e.distance/Math.max(1,current.e.target);
+      current.meters=Math.min(current.e.distance,current.meters+dt*baseMps);
+      current.progress=current.meters/current.e.distance;
+      updateCompetitorRace(now);
+      if(current.progress>=1) finishRace();
+    }
+    drawProgress();
+    if(!current.playerFinished)raf=requestAnimationFrame(tick);
+  };
+  raf=requestAnimationFrame(tick);
+}
+function step(amount){
+  if(!current||current.finished||!current.startedRace)return;
+  const meterBoost=Math.max(1,current.e.distance||100)*amount*(.8+Math.random()*.55);
+  current.meters=Math.min(current.e.distance||100,current.meters+meterBoost);
+  current.progress=current.meters/(current.e.distance||100);
+  current.effort=Math.min(1,current.effort+amount*2);
+  if(current.progress>=1)finishRace();
+  drawProgress();
+}
+function jumpHurdle(){
+  if(!current||current.finished||!current.startedRace)return;
+  const p=current.progress;
+  const hurdleIndex=Math.floor(p*10);
+  const nextHurdle=(hurdleIndex+1)/10;
+  const dist=Math.abs(nextHurdle-p);
+  if(dist<.075 || current.e.type==='hurdle400'){
+    current.hurdlesCleared=Math.min(10,current.hurdlesCleared+1);
+    current.progress=Math.min(1,current.progress+.045);
+    $('msg').textContent=`Cleared hurdle ${current.hurdlesCleared}/10`;
+  }else{
+    current.progress=Math.min(1,current.progress+.012);
+    $('msg').textContent='Jump timing was early — keep moving!';
+  }
+  if(current.progress>=1)finishRace();
+  drawProgress();
+}
+function setupHurdles(){
+  $('msg').textContent='Run toward each hurdle, then tap JUMP.';
+  runLoop();
+}
+function jumpRun(){
+  if(!current||current.finished||!current.startedRace)return;
+  current.progress=Math.min(1,current.progress+.10);
+  $('jumpRunner').style.left=(8+current.progress*22)+'%';
+  if(current.progress>=.82){ $('jumpBtn').disabled=false; }
+  $('fill').style.width=(current.progress*100)+'%';
+  $('msg').textContent=current.progress<.82?'Build speed for takeoff!':'TAKEOFF!';
+}
+function takeoff(){
+  if(!current||current.finished||!current.startedRace)return;
+  if(current.progress<.82){ $('msg').textContent='Too early — keep building the run-up.'; return; }
+  current.progress=1;
+  const quality=.72+Math.random()*.28;
+  const distance=5.8+quality*2.65;
+  const jr=$('jumpRunner'); jr.style.left='30%'; jr.style.bottom='90px'; jr.classList.add('jumpArc');
+  setTimeout(()=>{jr.style.left='75%';jr.style.bottom='68px';jr.classList.remove('jumpArc');$('measure').textContent=`Pit: ${distance.toFixed(2)}m`; finishJump(distance)},450);
+}
+
+function setupTripleJump(){
+  current.jumps=0; current.tripleBest=0;
+  $('msg').textContent='Build speed, then complete hop → step → jump.';
+  $('jumpBtn').disabled=true;
+}
+function tripleTakeoff(){
+  if(!current||current.finished||!current.startedRace)return;
+  if(current.progress<.82){$('msg').textContent='Keep running to the board.';return;}
+  const jr=$('jumpRunner');
+  current.jumps++;
+  jr.classList.add('jumpArc');
+  const phase=current.jumps===1?'HOP':current.jumps===2?'STEP':'JUMP';
+  $('msg').textContent=phase+'!';
+  if(current.jumps<3){
+    setTimeout(()=>{jr.classList.remove('jumpArc');$('jumpBtn').textContent=current.jumps===1?'STEP':'JUMP';},450);
+  }else{
+    const quality=.78+Math.random()*.22, distance=14.5+quality*3.5;
+    setTimeout(()=>{jr.classList.remove('jumpArc');$('measure').textContent=`Best: ${distance.toFixed(2)}m`;finishField(distance,'triple');},500);
+  }
+}
+function setupShotPut(){
+  current.effort=0;
+  $('msg').textContent='Build power, then release inside the sector.';
+}
+function shotPower(){
+  if(!current||current.finished||!current.startedRace)return;
+  current.effort=Math.min(1,current.effort+.16);
+  $('fill').style.width=(current.effort*100)+'%';
+  if(current.effort>=.65)$('throwBtn').disabled=false;
+}
+function shotThrow(){
+  if(!current||current.finished||!current.startedRace)return;
+  if(current.effort<.35){$('msg').textContent='Build more power first.';return;}
+  const distance=15+current.effort*8+Math.random()*1.8;
+  const shot=$('shot'); shot.style.left='70%'; shot.style.bottom='58%';
+  $('measure').textContent=`Throw: ${distance.toFixed(2)}m`;
+  finishField(distance,'shot');
+}
+function setupHighJump(){
+  current.height=1.80;
+  $('msg').textContent='Approach the bar and time your takeoff.';
+}
+function highApproach(){
+  if(!current||current.finished||!current.startedRace)return;
+  current.effort=Math.min(1,current.effort+.20);
+  $('jumpRunner').style.left=(10+current.effort*42)+'%';
+  $('fill').style.width=(current.effort*100)+'%';
+  if(current.effort>=.7)$('jumpBtn').disabled=false;
+}
+function highClear(){
+  if(!current||current.finished||!current.startedRace)return;
+  if(current.effort<.7){$('msg').textContent='You need more approach speed.';return;}
+  const quality=.80+Math.random()*.20;
+  const height=2.00+quality*.40;
+  const jr=$('jumpRunner'); jr.style.left='72%'; jr.style.bottom='150px'; jr.classList.add('jumpArc');
+  $('measure').textContent=`Height: ${height.toFixed(2)}m`;
+  setTimeout(()=>finishField(height,'high'),500);
+}
+function finishField(value,kind){
+  if(current.finished)return;
+  current.finished=true;
+  document.querySelectorAll('#actionButtons .btn').forEach(b=>b.disabled=true);
+  const place=placement(value,current.e.target,true);
+  award(place);
+  $('msg').textContent=`${place===1?'🏆 YOU WIN! ':place===2?'🥈 2nd PLACE! ':place===3?'🥉 3rd PLACE! ':'4th PLACE! '}${value.toFixed(2)}m`;
+}
+
+function finishJump(distance){
+  current.finished=true;
+  $('jumpBtn').disabled=true;$('runBtn').disabled=true;
+  const target=current.e.target;
+  const place=placement(distance,target,true);
+  award(place);
+  $('msg').textContent=`${place===1?'🏆 YOU WIN! ':place===2?'🥈 2nd PLACE! ':place===3?'🥉 3rd PLACE! ':'4th PLACE! '}${distance.toFixed(2)}m`;
+}
+
+function tlKitClass(index){
+  var kits=["kit-red","kit-blue","kit-green","kit-gold","kit-purple","kit-cyan","kit-orange","kit-pink"];
+  return kits[Math.abs(index)%kits.length];
+}
+function tlFormatTime(seconds){
+  if(!isFinite(seconds)) return "--";
+  if(seconds < 60) return seconds.toFixed(2)+"s";
+  var mins=Math.floor(seconds/60);
+  var secs=(seconds-mins*60).toFixed(2);
+  if(secs.length<5) secs="0"+secs;
+  return mins+":"+secs;
+}
+
+
+function tlApplyPlayableKit(){
+  try{
+    var r=document.querySelector(".runnerSprite");
+    if(r){
+      r.classList.remove("kit-red","kit-blue","kit-green","kit-gold","kit-purple","kit-cyan","kit-orange","kit-pink");
+      r.classList.add("kit-blue");
+    }
+  }catch(e){}
+}
+
+function drawProgress(){
+  if(!current)return;
+  $('fill').style.width=(current.progress*100)+'%';
+
+  current.competitors.forEach((c,i)=>{
+    const el=$('comp'+i);
+    if(!el)return;
+    // Player and competitors cover the SAME physical race distance.
+    // Progress is always meters / event distance, never an arbitrary screen distance.
+    const distance=Math.max(1,current.e.distance||100);
+    c.meters=Math.min(distance, Math.max(0,c.progress*distance));
+
+    if(current.e.type==='oval'||current.e.type==='relay'||current.e.type==='hurdle400'){
+      const laps=Math.max(.01,distance/400);
+      const p=(c.progress*2*Math.PI*laps)+(i*.08);
+      const x=50+34*Math.cos(p), y=50+32*Math.sin(p);
+      el.style.left=x+'%';
+      el.style.top=y+'%';
+      el.classList.add(tlKitClass(i));
+      let timeLabel=el.querySelector('.competitorTime');
+      if(!timeLabel){timeLabel=document.createElement('div');timeLabel.className='competitorTime';el.appendChild(timeLabel);}
+      timeLabel.textContent=tlFormatTime(c.finalTime!==null?c.finalTime:(current.raceElapsed||0));
+    }else{
+      const top=current.e.type==='hurdle'?45+i*40:38+i*40;
+      // Keep each runner centered in its assigned lane; only horizontal
+      // progress changes during straight races.
+      el.style.top=top+'px';
+      el.style.left=(5+c.progress*89)+'%';
+      el.style.transform='translateY(0)';
+    }
+  });
+
+  const r=$('runner'); if(!r)return;
+  if(current.e.type==='oval'||current.e.type==='relay'||current.e.type==='hurdle400'){
+    const laps=Math.max(0.01,current.e.distance/400);
+    const p=current.progress*2*Math.PI*laps, x=50+34*Math.cos(p), y=50+32*Math.sin(p);
+    r.style.left=x+'%';r.style.top=y+'%';r.style.transform='translate(-50%,-50%)';
+    if(current.e.type==='relay'){
+      r.style.opacity='0';
+      const leg=Math.min(3,Math.floor(current.progress*4));
+      const ht=$('handoffText'), baton=$('baton');
+      if(leg!==current.relayLeg){
+        const previous=current.relayLeg;
+        current.relayLeg=leg;
+        if(previous>=0){
+          const oldR=$('relayRunner'+previous); if(oldR){oldR.classList.remove('active');oldR.classList.add('handoffFlash');setTimeout(()=>oldR.classList.remove('handoffFlash'),700);}
+        }
+        const newR=$('relayRunner'+leg); if(newR){newR.classList.add('active');newR.classList.add('handoffFlash');setTimeout(()=>newR.classList.remove('handoffFlash'),700);}
+        if(ht)ht.textContent=leg<3?`HANDOFF ${leg+1}/3 — RUNNER ${leg+1} → RUNNER ${leg+2}`:'FINAL LEG — RUNNER 4 TO THE FINISH!';
+      }
+      if(baton){const zonePositions=[[24,50],[50,50],[76,50],[50,88]];const z=zonePositions[Math.min(3,leg)];baton.style.left=z[0]+'%';baton.style.top=z[1]+'%';baton.style.transform='rotate(-25deg)';}
+    }
+  }else{
+    r.style.left=(5+current.progress*89)+'%';
+  }
+}
+
+function showFinishCutscene(finisher,place,isPlayer=false){
+  const overlay=$('finishCutscene');
+  if(!overlay)return Promise.resolve();
+  const placeText=place===1?'🥇 1ST':place===2?'🥈 2ND':'🥉 3RD';
+  $('finishScenePlace').textContent=placeText;
+  $('finishSceneRunner').textContent=finisher.flag+' 🏃';
+  $('finishSceneName').textContent=(isPlayer?'YOU • ':'')+finisher.name+' • '+finisher.country;
+  $('finishSceneTime').textContent=tlFormatTime(finisher.time);
+  $('finishSceneDistance').textContent=`FINISH • ${current.e.distance}m`;
+  overlay.classList.remove('hidden');
+  return new Promise(resolve=>setTimeout(()=>{overlay.classList.add('hidden');resolve();},1000));
+}
+
+async function triggerCompetitorFinish(c,index){
+  if(c.finished)return;
+  c.finished=true;c.progress=1;c.meters=Math.max(1,current.e.distance);
+  const already=current.finishOrder.length;
+  c.finishPlace=already+1;
+  current.finishOrder.push(c);
+  if(c.finishPlace<=3 && !c.cutsceneShown){
+    c.cutsceneShown=true;
+    await showFinishCutscene({name:c.name,country:c.country,flag:c.flag,time:c.finalTime},c.finishPlace,false);
+  }
+}
+
+function updateCompetitorRace(now){
+  if(!current||!current.startedRace)return;
+  current.raceElapsed=(now-current.started)/1000;
+  const distance=Math.max(1,current.e.distance||100);
+  const eventTarget=current.e.target||10;
+  current.competitors.forEach((c,i)=>{
+    // Competitors run independently instead of following the player's progress.
+    // Their target is slightly slower than the player's realistic benchmark and
+    // changes a little from race to race.
+    if(c.targetTime===null){
+      // Keep every rival just behind the player's expected time, while still
+      // giving each athlete a different speed.
+      const playerPerformance=Math.max(0.965,Math.min(1.025,1-(current.effort||0)*0.06));
+      const playerTarget=eventTarget*0.985*playerPerformance;
+      const sprintEvent = distance===100 || distance===200 || /100m|200m/i.test(current.e.name||'');
+      const sprintSpecialist = sprintEvent && (c.name==='Malik Johnson' || c.name==='Darius King');
+      // Malik and Darius are the stronger pure sprinters, but only for the 100m/200m.
+      // They remain just behind the player while finishing ahead of the other rivals.
+      let rivalGap;
+      if(sprintSpecialist){
+        rivalGap = 1.004 + (c.name==='Darius King' ? 0.00025 : 0) + Math.random()*0.0005;
+      }else if(sprintEvent){
+        rivalGap = 1.008 + i*0.00055 + Math.random()*0.0012;
+      }else{
+        rivalGap = 1.004 + i*0.00045 + Math.random()*0.0015;
+      }
+      c.targetTime=playerTarget*rivalGap;
+    }
+    const rawProgress=Math.min(1,current.raceElapsed/Math.max(0.01,c.targetTime));
+    // Give competitors a noticeable burst in the first part of the race.
+    // The curve returns to their normal pace so they still finish at targetTime.
+    c.progress=rawProgress;
+    c.meters=Math.min(distance,c.progress*distance);
+    if(c.progress>=1&&!c.finished){
+      c.finished=true; c.progress=1; c.meters=distance;
+      c.finishPlace=(current.finishOrder||[]).length+1;
+      c.finishTime=c.targetTime; c.finalTime=c.targetTime;
+      current.finishOrder=current.finishOrder||[]; current.finishOrder.push(c);
+    }
+  });
+}
+
+async function finishRace(){
+  if(current.playerFinished)return;
+  const e=current.e;
+  // Keep displayed results in a realistic real-world competitive range.
+  // The game clock can be affected by button timing, so the result is bounded
+  // around the event benchmark rather than producing impossible times.
+  const elapsed=Math.max(0,(performance.now()-current.started)/1000);
+  // Keep results realistic while rewarding good player timing with a small edge.
+  // The player target is about 1.5% faster than the benchmark, with tap/reaction
+  // performance able to move the result modestly around that target.
+  const performanceBonus=Math.max(0.965,Math.min(1.025,1-(current.effort||0)*0.06));
+  const playerTarget=e.target*0.985*performanceBonus;
+  const time=Math.max(elapsed,Math.max(e.target*0.93,Math.min(e.target*1.03,playerTarget)));
+  current.time=time;
+  current.playerFinished=true;
+  current.finished=true;
+  cancelAnimationFrame(raf);
+  document.querySelectorAll('#actionButtons .btn').forEach(b=>b.disabled=true);
+
+  // Everyone covers the exact same distance. Competitor times are based on their
+  // recorded crossing time, with any runner still short of the line projected from
+  // the same live player pace so the results remain physically consistent.
+  current.progress=1;
+  current.meters=e.distance;
+  current.competitors.forEach(c=>{
+    if(c.finalTime===null){
+      c.meters=e.distance;
+      c.progress=1;
+      c.finished=true;
+      c.finalTime=Math.max(time*1.004, c.targetTime!==null
+        ? c.targetTime
+        : time/Math.max(.965,c.paceFactor));
+    }
+  });
+
+  const player={name:'You',country:'USA',flag:'🇺🇸',time};
+  const all=[player,...current.competitors.map(c=>({name:c.name,country:c.country,flag:c.flag,time:c.finalTime,competitor:c}))];
+  all.sort((a,b)=>a.time-b.time);
+  all.forEach((r,i)=>r.place=i+1);
+  const playerPlace=all.findIndex(x=>x===player)+1;
+  current.playerPlace=playerPlace;
+  award(playerPlace);
+  if(e.name==='100m Sprint' && (!career.best||time<career.best))career.best=time;
+  updateCareer();
+
+  // Show the top three in their actual finishing order.
+  const top3=all.slice(0,3);
+  for(let i=0;i<top3.length;i++){
+    const f=top3[i];
+    if(f===player){
+      await showFinishCutscene(player,i+1,true);
+    }else if(f.competitor){
+      const c=f.competitor;
+      c.cutsceneShown=true;
+      await showFinishCutscene({name:c.name,country:c.country,flag:c.flag,time:c.finalTime},i+1,false);
+    }
+  }
+
+  const display=formatTime(time);
+  $('msg').textContent=`${playerPlace===1?'🏆 YOU WIN! ':playerPlace===2?'🥈 2nd PLACE! ':playerPlace===3?'🥉 3rd PLACE! ':'4th PLACE! '}${display} • ${e.distance}m race`+(e.type==='relay'?' • Baton handoffs complete':'');
+  showCeremony(playerPlace,time);
+}
+function showCeremony(place,time){
+  let box=document.getElementById('ceremony');
+  if(!box){
+    box=document.createElement('div'); box.id='ceremony'; box.className='ceremony';
+    document.getElementById('game').appendChild(box);
+  }
+  const e=current.e;
+  const finishers=[{name:'You',country:'USA',flag:'🇺🇸',time:time,place:place}];
+  current.competitors.forEach(c=>finishers.push({name:c.name,country:c.country,flag:c.flag,time:c.finalTime}));
+  finishers.sort((a,b)=>e.type==='longjump'||e.type==='triplejump'||e.type==='shotput'||e.type==='highjump'?b.time-a.time:a.time-b.time);
+  finishers.forEach((r,i)=>r.place=i+1);
+  const medal=i=>i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
+  const podium=finishers.slice(0,3);
+  box.innerHTML='<div class="resultsTitle">Race Results</div><h2>🏆 FINAL RESULTS</h2>'+
+    '<div class="podium">'+
+    `<div class="podiumSpot silver">🥈<br>${podium[1].flag} ${podium[1].name}<br><span class="small">${formatTime(podium[1].time)}</span></div>`+
+    `<div class="podiumSpot gold">🥇<br>${podium[0].flag} ${podium[0].name}<br><span class="small">${formatTime(podium[0].time)}</span></div>`+
+    `<div class="podiumSpot bronze">🥉<br>${podium[2].flag} ${podium[2].name}<br><span class="small">${formatTime(podium[2].time)}</span></div>`+
+    '</div><h3>Final Leaderboard</h3>'+
+    '<table class="leaderboard">'+finishers.map((r,i)=>
+      `<tr><td>${r.place}</td><td>${medal(i)} ${r.flag} ${r.name}<br><span class="small">${r.country}</span></td><td><b>${formatTime(r.time)}</b></td></tr>`).join('')+
+    '</table>';
+}
+function placement(value,target,isJump){
+  // Competitive distribution centered near elite benchmark.
+  const rivals=[target*(.985+Math.random()*.035),target*(.97+Math.random()*.05),target*(.99+Math.random()*.045)];
+  if(isJump){
+    const rivalJ=[target*(.96+Math.random()*.04),target*(.91+Math.random()*.08),target*(.88+Math.random()*.08)];
+    return 1+rivalJ.filter(x=>x>value).length;
+  }
+  return 1+rivals.filter(x=>x<value).length;
+}
+function award(place){
+  if(place===1){career.wins++;career.gold++}
+  else if(place===2)career.silver++;
+  else if(place===3)career.bronze++;
+  updateCareer();
+}
+function updateCareer(){
+  $('wins').textContent=career.wins;$('gold').textContent=career.gold;$('silver').textContent=career.silver;$('bronze').textContent=career.bronze;
+  $('best').textContent=career.best?career.best.toFixed(2)+'s':'--';
+  $('medals').innerHTML=(career.gold?`<div class="medal goldText">🥇 ${career.gold} Gold</div>`:'')+
+    (career.silver?`<div class="medal silverText">🥈 ${career.silver} Silver</div>`:'')+
+    (career.bronze?`<div class="medal bronzeText">🥉 ${career.bronze} Bronze</div>`:'');
+}
+function formatTime(t){
+  if(t<60)return t.toFixed(2)+'s';
+  const m=Math.floor(t/60),s=(t-m*60).toFixed(2).padStart(5,'0');return `${m}:${s}`;
+}
+function reset(){
+  cancelAnimationFrame(raf);current=null;$('game').classList.add('hidden');$('home').classList.remove('hidden');$('championshipMenu').classList.add('hidden');$('competitionBtn').classList.remove('hidden');
+  const cut=$('finishCutscene');if(cut)cut.classList.add('hidden');
+  const cer=$('ceremony');if(cer)cer.remove();
+}
+const WORLD_RECORDS=[
+  ['100m','Men','9.58s','Usain Bolt 🇯🇲'],['100m','Women','10.49s','Florence Griffith Joyner 🇺🇸'],
+  ['200m','Men','19.19s','Usain Bolt 🇯🇲'],['200m','Women','21.34s','Florence Griffith Joyner 🇺🇸'],
+  ['400m','Men','43.03s','Wayde van Niekerk 🇿🇦'],['400m','Women','47.60s','Marita Koch 🇩🇪'],
+  ['800m','Men','1:40.91','David Rudisha 🇰🇪'],['800m','Women','1:53.28','Jarmila Kratochvílová 🇨🇿'],
+  ['1500m','Men','3:26.00','Hicham El Guerrouj 🇲🇦'],['1500m','Women','3:48.68','Faith Kipyegon 🇰🇪'],
+  ['110m Hurdles','Men','12.75s*','Ja’Kobe Tharp 🇺🇸'],['400m Hurdles','Men','45.80s*','Alison dos Santos 🇧🇷'],
+  ['High Jump','Men','2.45m','Javier Sotomayor 🇨🇺'],['High Jump','Women','2.10m','Yaroslava Mahuchikh 🇺🇦'],
+  ['Long Jump','Men','8.95m','Mike Powell 🇺🇸'],['Long Jump','Women','7.52m','Galina Chistyakova 🇺🇦'],
+  ['Triple Jump','Men','18.29m','Jonathan Edwards 🇬🇧'],['Triple Jump','Women','15.74m*','Yulimar Rojas 🇻🇪'],
+  ['Shot Put','Men','23.56m','Ryan Crouser 🇺🇸'],['4×100 Relay','Men','36.84s','Jamaica 🇯🇲']
+];
+function buildWorldRecords(){
+  const root=$('worldRecords');
+  root.innerHTML=WORLD_RECORDS.map(r=>`<div class="recordCard"><b>${r[0]} • ${r[1]}</b><strong>${r[2]}</strong><span>${r[3]}</span></div>`).join('');
+}
+function buildTable(){
+  $('benchmarkRows').innerHTML=Object.keys(EVENTS).map(n=>`<tr><td>${n}</td><td>${benchmarkText[n]}</td><td>${EVENTS[n].info}</td></tr>`).join('');
+  buildWorldRecords();
+}
+
+$('runSelectedHeat').addEventListener('click',runYourHeat);
+$('skipHeat').addEventListener('click',()=>{
+  if(!meet)return;
+  const idx=meet.heats.findIndex(h=>h.some(a=>a.result===null));
+  if(idx>=0)simulateHeat(idx);
+  if(meet.round==='Heats' && meet.heats.every(h=>h.every(a=>a.result!==null)))qualifyRound();
+  else if(meet.round==='Final' && meet.heats[0].every(a=>a.result!==null))finishMeetFinal();
+});
+$('nextRound').addEventListener('click',startNextRound);
+makeButtons();buildTable();updateCareer();
+})();
+window.addEventListener('load',tlApplyPlayableKit);
+</script>
+</body>
+</html>
